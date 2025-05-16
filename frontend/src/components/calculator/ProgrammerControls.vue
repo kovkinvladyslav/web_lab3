@@ -14,6 +14,7 @@
       <div class="col" v-for="btn in changeBaseButtons" :key="btn">
         <button 
           class="btn btn-outline-light w-100" 
+          :class="{ 'active': isCurrBase(btn) }"
           @click="handleButtonClick(btn)"
         >
           {{ btn }}
@@ -22,6 +23,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { useCalcStore } from '@/store/calcStore.js'
@@ -33,4 +35,6 @@ const changeBaseButtons = ['BIN', 'DEC', 'HEX']
 const handleButtonClick = (btn) => {
   calc.processBtn(btn)
 }
+
+const isCurrBase = (btn) => calc.base === btn ? true : false
 </script>
