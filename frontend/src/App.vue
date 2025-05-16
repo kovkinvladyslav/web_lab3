@@ -1,12 +1,12 @@
 <template>
-  <div id="app">
+<div id="app" class="bg-secondary">
 <header>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark shadow-sm">
     <div class="container">
-      <a class="navbar-brand mb-0 h1" href="app.html">
-        <img src="./assets/calcpic.svg" width="50" height="50" class="d-inline-block" alt="Calculator">
+      <router-link class="navbar-brand mb-0 h1" to="/">
+        <img src="/calcpic.svg" width="50" height="50" class="d-inline-block" alt="Calculator">
         Calculator
-      </a>
+      </router-link>
   
       <button 
       class="navbar-toggler" 
@@ -22,20 +22,23 @@
   
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="app.html">App</a>
+          <li class="nav-item" v-if="authenticated">
+            <router-link class="nav-link" to="/">App</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="profile.html">Profile</a>
+          <li class="nav-item" v-if="authenticated">
+            <router-link class="nav-link" to="/profile">Profile</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="index.html">Login</a>
+          <li class="nav-item" v-if="!authenticated">
+            <router-link class="nav-link" to="/">Login</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="registration.html">Register</a>
+          <li class="nav-item" v-if="!authenticated">
+            <router-link class="nav-link" to="/register">Register</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
+          <li class="nav-item" v-if="!authenticated">
+            <router-link class="nav-link" to="/about">About</router-link>
+          </li>
+          <li class ="nav-item" v-if="authenticated">
+            <a href="#" class="nav-link" @click="logout"> Logout </a>
           </li>
           
         </ul>
@@ -53,11 +56,28 @@
   </div>
 </template>
 
-<script setup>
-// Нічого не потрібно тут поки що
-</script>
-<style>
 
+<script setup>
+
+import { computed } from 'vue';
+import {useAuthStore} from '@/store/index.js'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const auth = useAuthStore()
+const authenticated = computed(()=>{
+  return auth.authenticated;
+})
+const logout = () => {
+  alert("logout")
+  auth.logout()
+  router.push('/login')
+}
+
+
+</script>
+
+<style>
 html, body, #app {
   height: 100%;
   margin: 0;
@@ -75,7 +95,6 @@ router-view {
   flex: 1;
 }
 
-/* Додаткові стилі */
 #login-form {
   width: 100%;
   max-width: 500px;
