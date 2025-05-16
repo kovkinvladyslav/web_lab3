@@ -3,8 +3,12 @@
     <div class="col-3" v-for="(btn, index) in row" :key="btn">
       <button
         class="btn w-100"
-        :class="index === row.length - 1 ? 'btn-secondary' : 'btn-light'"
+        :class="[
+          index === row.length - 1 ? 'btn-secondary' : 'btn-light',
+          isBinMode && !['0', '1', '+', '−', '×', '÷', '='].includes(btn) ? 'disabled-btn' : ''
+        ]"
         @click="handleButtonClick(btn)"
+        :disabled="isBinMode && !['0', '1', '+', '−', '×', '÷', '='].includes(btn)"
       >
         {{ btn }}
       </button>
@@ -13,6 +17,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useCalcStore } from '@/store/calcStore.js'
 
 const calc = useCalcStore()
@@ -23,7 +28,16 @@ const numberButtonRows = [
   ['0', '.', '=', '+']
 ]
 
+const isBinMode = computed(() => calc.base === 'BIN')
+
 const handleButtonClick = (btn) => {
   calc.processBtn(btn)
 }
 </script>
+
+<style scoped>
+.disabled-btn {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+</style>
