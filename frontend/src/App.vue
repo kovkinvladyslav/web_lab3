@@ -69,7 +69,6 @@ const authenticated = computed(()=>{
   return auth.authenticated;
 })
 const logout = () => {
-  alert("logout")
   auth.logout()
   router.push('/login')
 }
