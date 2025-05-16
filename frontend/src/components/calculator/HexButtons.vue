@@ -1,5 +1,5 @@
 <template>
-  <div class="row g-2 mb-2">
+  <div class="row g-2 mb-2" v-if="calc.base === 'HEX'">
     <div class="col-2" v-for="btn in hexButtons" :key="btn">
       <button 
         class="btn btn-info w-100" 
